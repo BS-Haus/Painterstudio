@@ -130,8 +130,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ticker-track i { width: .18em; height: .18em; border-radius: 50%; background: rgba(255,255,255,.45); margin: 0 .7em; flex: none; }
 @keyframes ticker { to { transform: translateX(-50%); } }
 
+/* INTRO */
+.intro { padding: clamp(72px, 10vw, 160px) var(--gutter) clamp(56px, 7vw, 112px); }
+.intro-sub { margin: 20px auto 0; max-width: 52ch; text-align: center; font-size: 15px; color: var(--muted); }
+.intro-line {
+  margin: 0 auto; max-width: 22ch; text-align: center;
+  font-size: clamp(28px, 3.6vw, 58px); font-weight: 400; line-height: 1.06; letter-spacing: -0.04em;
+}
+
 /* TRUSTED BY — logos drift right to left, fading in at the right edge and out at the left */
-.trusted { padding: clamp(48px, 6vw, 88px) 0 clamp(32px, 4vw, 56px); border-bottom: 1px solid var(--faint); }
+.trusted { padding: 0 0 clamp(32px, 4vw, 56px); border-bottom: 1px solid var(--faint); }
 .trusted-label {
   margin: 0 0 clamp(20px, 3vw, 36px); padding: 0 var(--gutter); text-align: center;
   font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
@@ -185,15 +193,27 @@ button.tile .tile-label::after {
 button.tile:hover .tile-label::after { opacity: 1; transform: none; }
 .tile:focus-visible { outline: 1px solid #fff; outline-offset: -1px; }
 
-/* STUDIO */
-.studio { padding: clamp(96px, 14vw, 200px) var(--gutter) clamp(64px, 9vw, 120px); }
-.studio-line {
-  margin: 0 0 clamp(48px, 6vw, 88px);
-  font-size: clamp(26px, 3.4vw, 52px); font-weight: 300; line-height: 1.08; letter-spacing: -0.035em;
-  max-width: 20ch;
+/* CONTENT BLOCKS — label left, content right */
+.block {
+  display: grid; grid-template-columns: 1fr 3fr; gap: 24px;
+  padding: clamp(64px, 9vw, 128px) var(--gutter); border-top: 1px solid var(--faint);
 }
-.studio-cols { display: grid; grid-template-columns: 1fr; gap: 32px; font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; line-height: 1.5; border-top: 1px solid var(--faint); padding-top: 20px; }
-.studio-note { margin: 0; color: var(--muted); max-width: 44ch; }
+.work + .block { border-top: 0; margin-top: clamp(32px, 5vw, 72px); }
+.block-label { margin: 0; padding-top: .7em; font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.block-title { margin: 0 0 clamp(32px, 4vw, 56px); font-size: clamp(28px, 3.6vw, 58px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; max-width: 18ch; }
+.service-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--faint); }
+.service-grid li {
+  display: flex; gap: 14px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--faint);
+  font-size: clamp(17px, 1.5vw, 22px); letter-spacing: -0.02em;
+}
+.service-grid span { font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; color: var(--muted); }
+.style-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.style-pair figure { margin: 0; }
+.style-pair img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.style-pair figcaption { margin-top: 14px; font-size: 15px; color: var(--muted); max-width: 32ch; }
+.block-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; }
+.block-copy p { margin: 0; font-size: 15px; color: var(--muted); }
+
 /* CONTACT */
 .contact { padding: clamp(64px, 10vw, 140px) var(--gutter) 22px; border-top: 1px solid var(--faint); }
 .ticker + .contact { border-top: 1px solid var(--faint); }
@@ -225,7 +245,9 @@ button.tile:hover .tile-label::after { opacity: 1; transform: none; }
   .nav { grid-template-columns: 1fr auto; }
   .nav-pill { display: none; }
   .reel-segments { width: 100%; }
-  .studio-cols { grid-template-columns: 1fr; }
+  .block { grid-template-columns: 1fr; gap: 16px; }
+  .service-grid { grid-template-columns: 1fr 1fr; }
+  .style-pair, .block-copy { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

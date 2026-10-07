@@ -29,12 +29,12 @@
 
   /* ---------- Reel: projects in order, with their length in the cut (seconds) ---------- */
   const PROJECTS = [
-    { title: "66°North", cat: "Commercial", len: 1.4 },
-    { title: "Aberfeldy", cat: "Brand film", len: 1.8 },
-    { title: "London Jazz Festival 2024", cat: "Events", len: 1.88 },
-    { title: "John Smith’s", cat: "Commercial", len: 1.8 },
+    { title: "66°North", cat: "Commercial", len: 2.8 },
+    { title: "Aberfeldy", cat: "Brand film", len: 3.96 },
+    { title: "London Jazz Festival 2024", cat: "Events", len: 3.84 },
+    { title: "John Smith’s", cat: "Commercial", len: 2.8 },
     { title: "Vision Pro", cat: "Commercial", len: 2.2 },
-    { title: "Serious Music", cat: "Interviews", len: 1.8 },
+    { title: "Serious Music", cat: "Interviews", len: 2.56 },
     { title: "The Hound Chiswick", cat: "Promo", len: 1.48 },
     { title: "London Jazz Festival 2026", cat: "Interviews", len: 2.28 },
   ];
