@@ -120,14 +120,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .reel-segments button:hover::before { background: rgba(255,255,255,.45); }
 
 /* TICKER */
-.ticker { overflow: hidden; border-top: 1px solid var(--faint); padding: 18px 0; }
+.ticker { overflow: hidden; border-top: 1px solid var(--faint); padding: clamp(22px, 3vw, 40px) 0; }
 .ticker-track {
   display: flex; align-items: center; width: max-content;
-  font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
-  animation: ticker 40s linear infinite;
+  font-family: var(--font); font-size: clamp(28px, 4vw, 60px); font-weight: 400; letter-spacing: -0.035em; line-height: 1;
+  animation: ticker 60s linear infinite;
 }
 .ticker-track span { white-space: nowrap; }
-.ticker-track i { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.5); margin: 0 28px; flex: none; }
+.ticker-track i { width: .18em; height: .18em; border-radius: 50%; background: rgba(255,255,255,.45); margin: 0 .7em; flex: none; }
 @keyframes ticker { to { transform: translateX(-50%); } }
 
 /* TRUSTED BY — logos drift right to left, fading in at the right edge and out at the left */
@@ -192,9 +192,7 @@ button.tile:hover .tile-label::after { opacity: 1; transform: none; }
   font-size: clamp(26px, 3.4vw, 52px); font-weight: 300; line-height: 1.08; letter-spacing: -0.035em;
   max-width: 20ch;
 }
-.studio-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; line-height: 1.5; border-top: 1px solid var(--faint); padding-top: 20px; }
-.services { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; }
-.services li:not(:last-child)::after { content: ","; margin-right: .35em; }
+.studio-cols { display: grid; grid-template-columns: 1fr; gap: 32px; font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; line-height: 1.5; border-top: 1px solid var(--faint); padding-top: 20px; }
 .studio-note { margin: 0; color: var(--muted); max-width: 44ch; }
 /* CONTACT */
 .contact { padding: clamp(64px, 10vw, 140px) var(--gutter) 22px; border-top: 1px solid var(--faint); }
