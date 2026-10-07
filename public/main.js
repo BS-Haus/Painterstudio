@@ -29,9 +29,9 @@
 
   /* ---------- Reel: projects in order, with their length in the cut (seconds) ---------- */
   const PROJECTS = [
-    { title: "66°North", cat: "Commercial", len: 2.8 },
-    { title: "Aberfeldy", cat: "Brand film", len: 3.96 },
-    { title: "London Jazz Festival 2024", cat: "Events", len: 3.84 },
+    { title: "66°North", cat: "Commercial", len: 2.84 },
+    { title: "Aberfeldy", cat: "Brand film", len: 4.12 },
+    { title: "London Jazz Festival 2024", cat: "Events", len: 3.96 },
     { title: "John Smith’s", cat: "Commercial", len: 2.8 },
     { title: "Vision Pro", cat: "Commercial", len: 2.2 },
     { title: "Serious Music", cat: "Interviews", len: 2.56 },
@@ -150,6 +150,39 @@
     };
     Promise.all(imgs.map((im) => im.decode().catch(() => {}))).then(() => setTimeout(flick, 250));
   }
+
+  /* ---------- Cinematic reveals below the reel ---------- */
+  // Headlines: each word rises out of a mask, sharpening from a soft blur
+  $$("[data-split]").forEach((el) => {
+    let i = 0;
+    const wrap = (node) => {
+      [...node.childNodes].forEach((n) => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            const w = document.createElement("span");
+            w.className = "w";
+            w.innerHTML = `<span style="--i:${i++}"></span>`;
+            w.firstChild.textContent = part;
+            frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) wrap(n);
+      });
+    };
+    wrap(el);
+    el.classList.add("split");
+  });
+  $$(".rv-stagger").forEach((el) => [...el.children].forEach((c, i) => c.style.setProperty("--i", i)));
+
+  const revealObs = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    revealObs.unobserve(e.target);
+  }), { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+  $$(".split, .rv, .rv-stagger, .rv-img").forEach((el) => revealObs.observe(el));
 
   /* ---------- Work tiles: play loops only while on screen ---------- */
   const vObs = new IntersectionObserver((entries) => entries.forEach((e) => {
