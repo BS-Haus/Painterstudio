@@ -3,291 +3,150 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Painter.Studio — Cinematic content studio, London</title>
-  <meta name="description" content="Painter.Studio is a London content studio led by cinematographer Charlie Painter. Commercials, brand films, interviews and event films with the production value of a TVC — made for the screens people actually watch." />
-  <meta name="theme-color" content="#0b0b0a" />
-  <meta property="og:title" content="Painter.Studio — Cinematic content studio, London" />
-  <meta property="og:description" content="The production value of a TVC, made for the feed. Commercials, brand films, interviews and events." />
-  <meta property="og:image" content="/media/66north-poster.jpg" />
+  <title>Painter.Studio — Content studio, London</title>
+  <meta name="description" content="Painter.Studio brings the production value of a TVC to the screens people are actually watching. Commercials, brand films, interviews and events. London." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:title" content="Painter.Studio" />
+  <meta property="og:description" content="The production value of a TVC, for the screens people are actually watching." />
+  <meta property="og:image" content="/media/reel-poster.jpg" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="/media/montage-poster.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
-  <a class="skip" href="#work">Skip to work</a>
+<body class="is-intro">
 
-  <!-- NAV -->
+  <!-- INTRO: frames flick through, then the reel expands to full screen -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-frame" id="loader-frame"></div>
+    <span class="loader-count" id="loader-count">00</span>
+  </div>
+
   <header class="nav" id="nav">
-    <a href="#top" class="wordmark" aria-label="Painter.Studio home">Painter<span>.</span>Studio</a>
-    <nav class="nav-links" aria-label="Primary">
+    <a href="#top" class="logo" aria-label="Painter.Studio home">Painter.Studio</a>
+    <nav class="nav-pill" aria-label="Primary">
+      <a href="#top" class="is-active">Reel</a>
       <a href="#work">Work</a>
-      <a href="#services">Services</a>
       <a href="#studio">Studio</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a href="mailto:hello@painterstudio.co.uk?subject=New%20project" class="btn btn-small nav-cta">Start a project</a>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+    <a href="mailto:hello@painterstudio.co.uk?subject=New%20project" class="pill-cta">Start a project</a>
   </header>
-  <div class="mobile-menu" id="mobile-menu" hidden>
-    <a href="#work">Work</a>
-    <a href="#services">Services</a>
-    <a href="#studio">Studio</a>
-    <a href="#contact">Contact</a>
-    <a href="mailto:hello@painterstudio.co.uk" class="mobile-mail">hello@painterstudio.co.uk</a>
-  </div>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="hero" aria-label="Showreel">
-      <div class="hero-media" id="hero-media">
-        <video class="hero-video" id="hero-video" autoplay muted playsinline loop preload="auto" poster="/media/montage-poster.jpg"><source src="/media/montage.mp4" type="video/mp4" /></video>
-      </div>
-      <div class="hero-shade"></div>
-      <div class="hero-inner">
-        <p class="eyebrow reveal">Cinematic content studio · London</p>
-        <h1 class="hero-title">
-          <span class="line"><span>Cinema</span></span>
-          <span class="line"><span>for the <em>feed.</em></span></span>
-        </h1>
-        <p class="hero-sub reveal">Painter.Studio brings the production value of a TVC to the screens people are actually watching.</p>
-        <div class="hero-actions reveal">
-          <a href="#work" class="btn">Watch the work</a>
-          <a href="mailto:hello@painterstudio.co.uk?subject=New%20project" class="btn btn-ghost">Start a project</a>
-        </div>
-      </div>
-      <div class="hero-meta">
-        <span class="rec" aria-hidden="true"></span>
-        <span class="hero-now">Now showing <strong id="hero-now">66°North — Commercial</strong></span>
-        <div class="hero-progress" aria-hidden="true"><span id="hero-bar"></span></div>
-      </div>
-    </section>
-
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Commercials</span><i>✦</i><span>Brand Films</span><i>✦</i><span>Interviews</span><i>✦</i><span>Events</span><i>✦</i><span>Editing</span><i>✦</i><span>Animation</span><i>✦</i>
-        <span>Commercials</span><i>✦</i><span>Brand Films</span><i>✦</i><span>Interviews</span><i>✦</i><span>Events</span><i>✦</i><span>Editing</span><i>✦</i><span>Animation</span><i>✦</i>
-      </div>
-    </div>
-
-    <!-- CLIENTS -->
-    <section class="clients" aria-label="Clients">
-      <p class="clients-label">Trusted to tell big stories by global brands &amp; bold challengers</p>
-      <div class="marquee">
-        <div class="marquee-track">
-          <img src="/logos/hp.png" alt="HP" width="500" height="333" />
-          <img src="/logos/vogue.png" alt="Vogue" width="500" height="333" />
-          <img src="/logos/cadbury.png" alt="Cadbury" width="500" height="333" />
-          <img src="/logos/mars.png" alt="Mars" width="500" height="333" />
-          <img src="/logos/bacardi.png" alt="Bacardi" width="500" height="333" />
-          <img src="/logos/bombay-sapphire.png" alt="Bombay Sapphire" width="500" height="333" />
-          <img src="/logos/grey-goose-2.png" alt="Grey Goose" width="500" height="333" />
-          <img src="/logos/youtube.png" alt="YouTube" width="500" height="333" />
-        </div>
-      </div>
-    </section>
-
-    <!-- INTRO -->
-    <section class="intro" id="studio">
-      <div class="container">
-        <p class="eyebrow reveal">The studio</p>
-        <p class="intro-statement reveal">
-          A content studio led by cinematographer <em>Charlie Painter.</em> Commercial-grade craft for the films people actually watch.
+    <!-- REEL -->
+    <section class="reel" id="reel-wrap" aria-label="Showreel">
+      <video class="reel-video" id="reel" muted playsinline loop preload="auto" poster="/media/reel-poster.jpg">
+        <source src="/media/reel.mp4" type="video/mp4" />
+      </video>
+      <div class="reel-shade"></div>
+      <div class="reel-bottom">
+      <div class="reel-ui">
+        <p class="reel-now" aria-live="polite">
+          <span class="reel-index" id="reel-index">01</span>
+          <span class="reel-title" id="reel-title">66°North</span>
+          <span class="reel-cat" id="reel-cat">Commercial</span>
         </p>
-        <div class="intro-grid">
-          <div class="reveal">
-            <span class="num">01</span>
-            <h3>One team, camera to cut</h3>
-            <p>Concept, shoot, edit, grade and animation under one roof — so the film you pitched is the film you get.</p>
-          </div>
-          <div class="reveal">
-            <span class="num">02</span>
-            <h3>Cinema craft, social speed</h3>
-            <p>A DP-led crew that lights and frames like a commercial set, but moves at the pace content teams need.</p>
-          </div>
-          <div class="reveal">
-            <span class="num">03</span>
-            <h3>Built for every screen</h3>
-            <p>Hero films with cut-downs for the feed, the story and the big screen — planned on set, not cropped after.</p>
-          </div>
-        </div>
+        <ol class="reel-segments" id="reel-segments" aria-label="Projects in the reel"></ol>
+      </div>
+      <div class="wordmark" aria-hidden="true"><span id="wordmark">Painter.Studio</span></div>
       </div>
     </section>
+
+    <!-- TICKER -->
+    <div class="ticker" aria-label="Commercials, brand films, interviews and events. London, UK. Est. 2020.">
+      <div class="ticker-track" aria-hidden="true"><span>Content studio</span><i></i><span>Commercials</span><i></i><span>Brand films</span><i></i><span>Interviews</span><i></i><span>Events</span><i></i><span>Editing</span><i></i><span>Animation</span><i></i><span>London, UK</span><i></i><span>Est. 2020</span><i></i><span>Content studio</span><i></i><span>Commercials</span><i></i><span>Brand films</span><i></i><span>Interviews</span><i></i><span>Events</span><i></i><span>Editing</span><i></i><span>Animation</span><i></i><span>London, UK</span><i></i><span>Est. 2020</span><i></i><span>Content studio</span><i></i><span>Commercials</span><i></i><span>Brand films</span><i></i><span>Interviews</span><i></i><span>Events</span><i></i><span>Editing</span><i></i><span>Animation</span><i></i><span>London, UK</span><i></i><span>Est. 2020</span><i></i><span>Content studio</span><i></i><span>Commercials</span><i></i><span>Brand films</span><i></i><span>Interviews</span><i></i><span>Events</span><i></i><span>Editing</span><i></i><span>Animation</span><i></i><span>London, UK</span><i></i><span>Est. 2020</span><i></i></div>
+    </div>
 
     <!-- WORK -->
     <section class="work" id="work">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow reveal">Featured projects — click to play</p>
-            <h2 class="section-title reveal">Selected<br /><em>work.</em></h2>
-          </div>
-          <div class="filters reveal" role="tablist" aria-label="Filter work">
-            <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
-            <button class="filter" data-filter="commercial" role="tab" aria-selected="false">Commercials</button>
-            <button class="filter" data-filter="brand" role="tab" aria-selected="false">Brand films</button>
-            <button class="filter" data-filter="interview" role="tab" aria-selected="false">Interviews</button>
-            <button class="filter" data-filter="event" role="tab" aria-selected="false">Events</button>
-          </div>
-        </div>
+      <div class="work-head">
+        <h2>Selected work <sup>(08)</sup></h2>
+        <span>Click to play</span>
+      </div>
 
-        <div class="grid" id="grid">
-          <article class="tile tile-xl" data-cat="commercial" data-provider="vimeo" data-id="1213570673" data-title="66°North — ‘Calming the Storm’">
-            <button class="tile-btn" aria-label="Play 66°North — Calming the Storm">
-              <div class="tile-media"><video muted playsinline loop preload="none" poster="/media/66north-poster.jpg" data-src="/media/66north.mp4"></video></div>
-              <div class="tile-info"><span class="tile-cat">Commercial</span><h3>66°North <em>‘Calming the Storm’</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile" data-cat="brand" data-provider="vimeo" data-id="1176200194" data-title="Aberfeldy — ‘Taste of Scotland’">
-            <button class="tile-btn" aria-label="Play Aberfeldy — Taste of Scotland">
-              <div class="tile-media"><img src="/media/aberfeldy.jpg" alt="" loading="lazy" /></div>
-              <div class="tile-info"><span class="tile-cat">Brand film</span><h3>Aberfeldy <em>‘Taste of Scotland’</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile" data-cat="commercial" data-provider="vimeo" data-id="1189764769" data-title="John Smith’s — ‘Traditions’">
-            <button class="tile-btn" aria-label="Play John Smith’s — Traditions">
-              <div class="tile-media"><img src="/media/johnsmiths.jpg" alt="" loading="lazy" /></div>
-              <div class="tile-info"><span class="tile-cat">Commercial</span><h3>John Smith’s <em>‘Traditions’</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile tile-wide" data-cat="interview brand" data-provider="vimeo" data-id="1227778727" data-title="London Jazz Festival 2026 — Launch">
-            <button class="tile-btn" aria-label="Play London Jazz Festival 2026 — Launch">
-              <div class="tile-media"><video muted playsinline loop preload="none" poster="/media/ljf26-poster.jpg" data-src="/media/ljf26.mp4"></video></div>
-              <div class="tile-info"><span class="tile-cat">Interviews · Brand film</span><h3>London Jazz Festival <em>2026 Launch</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile tile-narrow" data-cat="commercial" data-provider="vimeo" data-id="926185147" data-title="Vision Pro — Commercial">
-            <button class="tile-btn" aria-label="Play Vision Pro">
-              <div class="tile-media"><video muted playsinline loop preload="none" poster="/media/visionpro-poster.jpg" data-src="/media/visionpro.mp4"></video></div>
-              <div class="tile-info"><span class="tile-cat">Commercial</span><h3>Vision Pro</h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile tile-narrow" data-cat="event" data-provider="youtube" data-id="yeVv56UTupE" data-title="London Jazz Festival 2024 — Highlight Film">
-            <button class="tile-btn" aria-label="Play London Jazz Festival 2024 — Highlight Film">
-              <div class="tile-media"><video muted playsinline loop preload="none" poster="/media/ljf24-poster.jpg" data-src="/media/ljf24.mp4"></video></div>
-              <div class="tile-info"><span class="tile-cat">Events</span><h3>London Jazz Festival <em>2024 Highlights</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile tile-wide" data-cat="interview brand" data-provider="youtube" data-id="ugaZUGlBulc" data-title="Serious Music — London Jazz Festival 2024 Launch">
-            <button class="tile-btn" aria-label="Play Serious Music — London Jazz Festival 2024 Launch">
-              <div class="tile-media"><img src="/media/ljf24-launch.jpg" alt="" loading="lazy" /></div>
-              <div class="tile-info"><span class="tile-cat">Interviews</span><h3>Serious Music <em>LJF 2024 Launch</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="tile tile-xl" data-cat="event" data-provider="file" data-id="/media/hero.mp4" data-title="The Hound Chiswick — Promo">
-            <button class="tile-btn" aria-label="Play The Hound Chiswick promo">
-              <div class="tile-media"><video muted playsinline loop preload="none" poster="/media/hero-poster.jpg" data-src="/media/hero.mp4"></video></div>
-              <div class="tile-info"><span class="tile-cat">Promo · Events</span><h3>The Hound <em>Chiswick</em></h3></div>
-              <span class="play" aria-hidden="true"></span>
-            </button>
-          </article>
+      <div class="grid">
+        <button class="tile tile-full" data-provider="vimeo" data-id="1213570673" data-hash="ef3a99b161" data-title="66°North — ‘Calming the Storm’">
+          <video muted playsinline loop preload="none" poster="/media/66north-poster.jpg" data-src="/media/66north.mp4"></video>
+          <span class="tile-label"><b>66°North</b><i>Commercial</i></span>
+        </button>
+        <button class="tile" data-provider="vimeo" data-id="1176200194" data-title="Aberfeldy — ‘Taste of Scotland’">
+          <img src="/media/aberfeldy.jpg" alt="" loading="lazy" />
+          <span class="tile-label"><b>Aberfeldy</b><i>Brand film</i></span>
+        </button>
+        <button class="tile" data-provider="vimeo" data-id="1189764769" data-title="John Smith’s — ‘Traditions’">
+          <img src="/media/johnsmiths.jpg" alt="" loading="lazy" />
+          <span class="tile-label"><b>John Smith’s</b><i>Commercial</i></span>
+        </button>
+        <button class="tile tile-full" data-provider="vimeo" data-id="1227778727" data-title="London Jazz Festival 2026 — Launch">
+          <video muted playsinline loop preload="none" poster="/media/ljf26-poster.jpg" data-src="/media/ljf26.mp4"></video>
+          <span class="tile-label"><b>London Jazz Festival 2026</b><i>Interviews</i></span>
+        </button>
+        <button class="tile" data-provider="vimeo" data-id="926185147" data-title="Vision Pro">
+          <video muted playsinline loop preload="none" poster="/media/visionpro-poster.jpg" data-src="/media/visionpro.mp4"></video>
+          <span class="tile-label"><b>Vision Pro</b><i>Commercial</i></span>
+        </button>
+        <button class="tile" data-provider="youtube" data-id="yeVv56UTupE" data-title="London Jazz Festival 2024 — Highlights">
+          <video muted playsinline loop preload="none" poster="/media/ljf24-poster.jpg" data-src="/media/ljf24.mp4"></video>
+          <span class="tile-label"><b>London Jazz Festival 2024</b><i>Events</i></span>
+        </button>
+        <button class="tile tile-full" data-provider="youtube" data-id="ugaZUGlBulc" data-title="Serious Music — London Jazz Festival 2024 Launch">
+          <img src="/media/ljf24-launch.jpg" alt="" loading="lazy" />
+          <span class="tile-label"><b>Serious Music</b><i>Interviews</i></span>
+        </button>
+        <button class="tile" data-provider="file" data-id="/media/hero.mp4" data-title="The Hound Chiswick">
+          <video muted playsinline loop preload="none" poster="/media/hero-poster.jpg" data-src="/media/hero.mp4"></video>
+          <span class="tile-label"><b>The Hound Chiswick</b><i>Promo</i></span>
+        </button>
+        <div class="tile">
+          <img src="/media/still.jpg" alt="" loading="lazy" />
+          <span class="tile-label"><b>Corporate interviews</b><i>Documentary style</i></span>
         </div>
       </div>
     </section>
 
-    <!-- STYLE -->
-    <section class="style">
-      <div class="container">
-        <p class="eyebrow reveal">Our style</p>
-        <h2 class="section-title big reveal">Are you ready for your <em>Netflix</em> documentary?</h2>
-        <div class="style-grid">
-          <figure class="style-card reveal">
-            <div class="frame"><img src="/media/still.jpg" alt="An interviewee lit on a stage between vertical light bars" loading="lazy" /></div>
-            <figcaption><span>Corporate interviews</span> that look like Netflix documentaries.</figcaption>
-          </figure>
-          <figure class="style-card reveal">
-            <div class="frame"><img src="/media/selected.jpg" alt="A man holding a clapperboard on a leather sofa" loading="lazy" /></div>
-            <figcaption><span>Brand films</span> that look like Hollywood movies.</figcaption>
-          </figure>
-        </div>
+    <!-- STUDIO -->
+    <section class="studio" id="studio">
+      <p class="studio-line">The production value of a TVC, for the screens people are actually watching.</p>
+      <div class="studio-cols">
+        <ul class="services">
+          <li>Commercials</li><li>Brand films</li><li>Interviews</li><li>Events</li><li>Editing</li><li>Animation</li>
+        </ul>
+        <p class="studio-note">Based in Tower Hamlets. Each month we fund skills-training to help people leave homelessness behind.</p>
       </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section class="services" id="services">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow reveal">Services</p>
-            <h2 class="section-title reveal">What we<br /><em>make.</em></h2>
-          </div>
-          <p class="section-sub reveal">From a single interview day to a full commercial campaign — we scale the crew to the story, never the craft.</p>
-        </div>
-        <ol class="service-list">
-          <li class="reveal"><span class="num">01</span><h3>Commercials</h3><p>Concept-led spots for broadcast, paid social and OOH — shot with the polish of a TVC.</p></li>
-          <li class="reveal"><span class="num">02</span><h3>Brand Films</h3><p>Stories about who you are and why it matters, crafted to be watched, not skipped.</p></li>
-          <li class="reveal"><span class="num">03</span><h3>Corporate Interviews</h3><p>Documentary-grade lighting and direction that makes your people look and sound their best.</p></li>
-          <li class="reveal"><span class="num">04</span><h3>Events</h3><p>Festivals, launches and live moments — captured with energy and turned around fast.</p></li>
-          <li class="reveal"><span class="num">05</span><h3>Editing &amp; Grade</h3><p>Story-first edits, colour and sound, with cut-downs for every platform and aspect ratio.</p></li>
-          <li class="reveal"><span class="num">06</span><h3>Animation</h3><p>Motion graphics, titles and animated sequences that extend your film’s world.</p></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- PHILOSOPHY -->
-    <section class="philosophy">
-      <div class="philosophy-bg" aria-hidden="true"><img src="/media/ljf24-launch.jpg" alt="" loading="lazy" /></div>
-      <div class="container">
-        <p class="eyebrow reveal">Our philosophy</p>
-        <h2 class="section-title big reveal">Social content, <em>for social good.</em></h2>
-        <div class="philosophy-copy reveal">
-          <p>Painter.Studio is based in Tower Hamlets — an area facing critical homelessness pressures. It’s an issue we’re helping to solve.</p>
-          <p>Each month, we fund skills-training to help people into work — to rebuild their lives, and leave homelessness behind. Every project you make with us is part of that.</p>
-        </div>
+      <p class="clients-label">Trusted by global brands &amp; bold challengers</p>
+      <div class="clients" aria-label="Clients">
+        <img src="/logos/hp.png" alt="HP" loading="lazy" />
+        <img src="/logos/vogue.png" alt="Vogue" loading="lazy" />
+        <img src="/logos/cadbury.png" alt="Cadbury" loading="lazy" />
+        <img src="/logos/mars.png" alt="Mars" loading="lazy" />
+        <img src="/logos/bacardi.png" alt="Bacardi" loading="lazy" />
+        <img src="/logos/bombay-sapphire.png" alt="Bombay Sapphire" loading="lazy" />
+        <img src="/logos/grey-goose-2.png" alt="Grey Goose" loading="lazy" />
+        <img src="/logos/youtube.png" alt="YouTube" loading="lazy" />
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="contact" id="contact">
-      <div class="container">
-        <p class="eyebrow reveal">Got a story to tell?</p>
-        <h2 class="contact-title reveal">Let’s make<br />something<br /><em>worth watching.</em></h2>
-        <a class="contact-mail reveal" href="mailto:hello@painterstudio.co.uk?subject=New%20project">hello@painterstudio.co.uk <span aria-hidden="true">→</span></a>
-        <div class="contact-grid reveal">
-          <div><span class="label">Studio</span><p>1 Shacklewell St<br />London E2 7EG</p></div>
-          <div><span class="label">New business</span><p><a href="mailto:hello@painterstudio.co.uk">hello@painterstudio.co.uk</a></p></div>
-          <div><span class="label">Work with us on</span><p>Commercials · Brand films<br />Interviews · Events</p></div>
-        </div>
+    <footer class="contact" id="contact">
+      <a class="contact-mail" href="mailto:hello@painterstudio.co.uk">hello@painterstudio.co.uk</a>
+      <div class="contact-meta">
+        <span>1 Shacklewell St, London E2 7EG</span>
+        <span>© <span id="year">2026</span> Painter.Studio</span>
       </div>
-    </section>
+    </footer>
   </main>
-
-  <footer class="footer">
-    <div class="footer-giant" aria-hidden="true">Painter.Studio</div>
-    <div class="container footer-inner">
-      <span class="wordmark">Painter<span>.</span>Studio</span>
-      <span>© <span id="year">2026</span> Painter.Studio · London</span>
-      <a href="#top">Back to top ↑</a>
-    </div>
-  </footer>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Video player" hidden>
-    <button class="lightbox-close" aria-label="Close video">Close <span aria-hidden="true">✕</span></button>
-    <div class="lightbox-stage"><div class="lightbox-frame" id="lightbox-frame"></div></div>
+    <button class="lightbox-close" aria-label="Close video">Close</button>
+    <div class="lightbox-frame" id="lightbox-frame"></div>
     <p class="lightbox-title" id="lightbox-title"></p>
   </div>
 
-  <div class="cursor" id="cursor" aria-hidden="true">Play</div>
-  <div class="grain" aria-hidden="true"></div>
   <script src="/main.js" defer></script>
 </body>
 </html>
