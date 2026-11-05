@@ -8,10 +8,23 @@
   --gutter: clamp(16px, 2.2vw, 32px);
   --ease: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Tactile: dark neutral steps (ground #000 sits below ink-1) and the roles built from them */
+  --ink-1: #0a0a0a; --ink-2: #111; --ink-3: #191919; --ink-4: #212121; --ink-5: #292929;
+  --ink-6: #323232; --ink-7: #3c3c3c; --ink-8: #4b4b4b; --ink-10: #8a8a8a; --ink-11: #b4b4b4; --ink-12: #eee;
+  --press: cubic-bezier(.23, 1, .32, 1);                       /* strong ease-out for anything the user causes */
+  --drop: 0 1px 2px 0 rgb(0 0 0 / .5);                         /* every dark drop is black, never a glow */
+  --primary-bg: #fff; --primary-fg: #000;
+  --primary-hover: color-mix(in srgb, #fff 93%, #000);         /* 7% toward its text colour */
+  --shadow-primary: 0 0 0 .5px var(--primary-bg), var(--drop);
+  --shadow-button: 0 0 0 .5px var(--ink-7), var(--drop);       /* secondary on an overlay: outline 3 steps above an ink-4 fill */
+  --shadow-card: 0 0 0 .5px var(--ink-6), var(--drop), 0 3px 4px -2px rgb(0 0 0 / .5);
+  --shadow-modal: 0 0 0 .5px var(--ink-6), var(--drop), 0 6px 8px -4px rgb(0 0 0 / .5);
+  --focus-ring: var(--ink-10);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; } /* nothing may widen the phone viewport */
 body {
   margin: 0;
   background: var(--bg);
@@ -28,6 +41,8 @@ img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; }
 ::selection { background: #fff; color: #000; }
+:focus:not(:focus-visible) { outline: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* LOGO — his original wordmark: Helvetica Neue, regular, tight tracking */
 .logo {
@@ -47,21 +62,50 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   transition: opacity .8s var(--ease-out) .5s, transform .8s var(--ease-out) .5s;
 }
 .nav .logo { justify-self: start; }
+/* Nav toggle: a sunken track with one raised pill that slides to the active option */
 .nav-pill {
-  display: flex; gap: 2px; padding: 4px; border-radius: 999px;
-  background: rgba(18, 18, 18, .62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  position: relative; display: flex; gap: 2px; padding: 4px; border-radius: 999px;
+  background: rgb(17 17 17 / .72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
 }
-.nav-pill a, .pill-cta {
+.nav-pill a, .pill-cta, .btn-secondary, .lightbox-title {
   font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
 }
-.nav-pill a { padding: 8px 14px; border-radius: 999px; color: rgba(255,255,255,.75); transition: background .3s, color .3s; }
-.nav-pill a:hover { color: #fff; }
-.nav-pill a.is-active { background: #fff; color: #000; }
-.pill-cta {
-  justify-self: end; padding: 10px 16px; border-radius: 999px; background: #fff; color: #000;
-  transition: background .3s, color .3s;
+.nav-pill a {
+  position: relative; z-index: 1; display: inline-flex; align-items: center; height: 28px; padding: 0 14px; border-radius: 999px;
+  color: var(--ink-11); transition: color .15s var(--press), transform .15s var(--press);
 }
-.pill-cta:hover { background: rgba(255,255,255,.75); }
+.nav-pill a:hover, .nav-pill a.is-active { color: var(--ink-12); }
+.nav-pill a:active { transform: scale(.97); }
+.nav-pill-thumb {
+  position: absolute; top: 4px; left: 0; height: 28px; width: var(--w, 0); border-radius: 999px;
+  background: var(--ink-4); box-shadow: var(--shadow-button);
+  transform: translateX(var(--x, 0));
+  transition: transform .4s cubic-bezier(.3, 1.18, .5, 1), width .4s cubic-bezier(.3, 1.18, .5, 1); /* ~.12 bounce: settles inside the 4px inset */
+}
+.nav-pill:not(.is-ready) .nav-pill-thumb { transition: none; }
+
+/* Primary: the one "do this next" action */
+.pill-cta {
+  justify-self: end; position: relative; display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px;
+  background: var(--primary-bg); color: var(--primary-fg); box-shadow: var(--shadow-primary);
+  transition: background-color .15s var(--press), transform .15s var(--press);
+}
+.pill-cta:hover { background: var(--primary-hover); }
+.pill-cta:active { transform: scale(.97); }
+
+/* Secondary: raised from the overlay it sits on */
+.btn-secondary {
+  position: relative; display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px;
+  background: var(--ink-4); color: var(--ink-12); box-shadow: var(--shadow-button);
+  transition: background-color .15s var(--press), transform .15s var(--press);
+}
+.btn-secondary:hover { background: var(--ink-5); }
+.btn-secondary:active { transform: scale(.97); }
+
+/* 44pt touch targets without changing how small controls look */
+@media (pointer: coarse) {
+  .pill-cta::after, .btn-secondary::after { content: ""; position: absolute; inset: -4px; }
+}
 .is-intro .nav { opacity: 0; transform: translateY(-8px); }
 
 /* LOADER */
@@ -114,10 +158,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .reel-now.swap .reel-title, .reel-now.swap .reel-cat { opacity: 0; transform: translateY(4px); }
 .reel-segments { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; width: min(46vw, 520px); }
 .reel-segments li { flex: var(--w, 1); }
-.reel-segments button { display: block; width: 100%; padding: 10px 0; position: relative; }
-.reel-segments button::before { content: ""; display: block; height: 2px; background: var(--faint); }
-.reel-segments button span { position: absolute; left: 0; top: 10px; height: 2px; width: 100%; background: #fff; transform-origin: left; transform: scaleX(0); }
-.reel-segments button:hover::before { background: rgba(255,255,255,.45); }
+.reel-segments button { display: block; width: 100%; padding: 10px 0; position: relative; transition: transform .15s var(--press); }
+.reel-segments button::before { content: ""; display: block; height: 2px; border-radius: 1px; background: var(--faint); transition: background-color .15s var(--press); }
+.reel-segments button span { position: absolute; left: 0; top: 10px; height: 2px; width: 100%; border-radius: 1px; background: #fff; transform-origin: left; transform: scaleX(0); }
+.reel-segments button:hover::before { background: rgb(255 255 255 / .45); }
+.reel-segments button:active { transform: scale(.92); }
+.reel-segments button:active::before { background: rgb(255 255 255 / .6); }
+@media (pointer: coarse) { .reel-segments button { padding: 21px 0; } .reel-segments button span { top: 21px; } }
 
 /* TICKER */
 .ticker { overflow: hidden; border-top: 1px solid var(--faint); padding: clamp(22px, 3vw, 40px) 0; }
@@ -169,29 +216,40 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .work-head h2 { font-size: inherit; font-weight: 500; margin: 0; }
 .work-head sup { font-size: inherit; color: var(--muted); vertical-align: baseline; margin-left: 6px; }
 .work-head span { color: var(--muted); }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 8px; }
+
+/* Card: raised off the black ground by a 0.5px edge and a crisp black drop; squeezes a little when pressed */
 .tile {
-  position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #0a0a0a; text-align: left;
+  position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; text-align: left;
+  background: var(--ink-2); border-radius: 8px; box-shadow: var(--shadow-card);
+  transition: transform .15s var(--press);
 }
 .tile-full { grid-column: span 2; aspect-ratio: 2.39 / 1; }
-.tile img, .tile video { width: 100%; height: 100%; object-fit: cover; transition: transform 1.6s var(--ease-out); }
-button.tile:hover img, button.tile:hover video { transform: scale(1.03); }
-.tile::after { content: ""; position: absolute; inset: auto 0 0 0; height: 30%; background: linear-gradient(0deg, rgba(0,0,0,.45), transparent); pointer-events: none; }
+.tile img, .tile video { width: 100%; height: 100%; object-fit: cover; }
+button.tile:active { transform: scale(.99); }
+.tile::after { content: ""; position: absolute; inset: auto 0 0 0; height: 30%; background: linear-gradient(0deg, rgb(0 0 0 / .45), transparent); pointer-events: none; }
 .tile-label {
-  position: absolute; z-index: 1; left: var(--gutter); bottom: 18px; right: var(--gutter);
+  position: absolute; z-index: 1; left: var(--gutter); bottom: 16px; right: 16px;
   display: flex; gap: 12px; align-items: center;
   font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
-  text-shadow: 0 1px 12px rgba(0,0,0,.45);
+  text-shadow: 0 1px 12px rgb(0 0 0 / .45);
 }
 .tile-label b { font-weight: 400; }
-.tile-label i { font-style: normal; color: rgba(255,255,255,.7); }
+.tile-label i { font-style: normal; color: rgb(255 255 255 / .7); }
+/* Play: a raised pill on the picture; always there on touch, where hover doesn't exist */
 button.tile .tile-label::after {
-  content: "Play"; margin-left: auto; opacity: 0; transform: translateX(-6px);
-  padding: 7px 12px; border-radius: 999px; background: #fff; color: #000; text-shadow: none;
-  transition: opacity .4s, transform .5s var(--ease-out);
+  content: "Play"; margin-left: auto; display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px;
+  background: var(--primary-bg); color: var(--primary-fg); box-shadow: var(--shadow-primary); text-shadow: none;
+  opacity: 0; transition: opacity .15s var(--press), transform .15s var(--press);
 }
-button.tile:hover .tile-label::after { opacity: 1; transform: none; }
-.tile:focus-visible { outline: 1px solid #fff; outline-offset: -1px; }
+button.tile:active .tile-label::after { transform: scale(.92); }
+@media (hover: hover) and (pointer: fine) {
+  button.tile:hover .tile-label::after { opacity: 1; }
+  .tile img, .tile video { transition: filter .15s var(--press); }
+  button.tile:hover img, button.tile:hover video { filter: brightness(1.08); }
+}
+@media (hover: none) { button.tile .tile-label::after { opacity: 1; } }
+.tile:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* CONTENT BLOCKS — label left, content right */
 .block {
@@ -207,9 +265,9 @@ button.tile:hover .tile-label::after { opacity: 1; transform: none; }
   font-size: clamp(17px, 1.5vw, 22px); letter-spacing: -0.02em;
 }
 .service-grid span { font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; color: var(--muted); }
-.style-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.style-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .style-pair figure { margin: 0; }
-.style-pair img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.style-pair img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-card); background: var(--ink-2); }
 .style-pair figcaption { margin-top: 14px; font-size: 15px; color: var(--muted); max-width: 32ch; }
 .block-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; }
 .block-copy p { margin: 0; font-size: 15px; color: var(--muted); }
@@ -224,19 +282,56 @@ button.tile:hover .tile-label::after { opacity: 1; transform: none; }
 .contact-mail:hover { opacity: .55; }
 .contact-meta { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: clamp(64px, 9vw, 120px); font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 
-/* LIGHTBOX */
-.lightbox {
-  position: fixed; inset: 0; z-index: 60; background: #000;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 64px var(--gutter) 40px; opacity: 0; transition: opacity .4s;
-}
+/* LIGHTBOX — a modal on desktop, a bottom sheet on a phone */
+.lightbox { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 48px var(--gutter); }
 .lightbox[hidden] { display: none; }
-.lightbox.is-open { opacity: 1; }
-.lightbox-frame { position: relative; width: min(100%, calc((100vh - 150px) * 16 / 9)); aspect-ratio: 16 / 9; }
+.lightbox-backdrop {
+  position: absolute; inset: 0; background: rgb(0 0 0 / .9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  opacity: 0; transition: opacity .2s var(--press);
+}
+.lightbox-panel {
+  position: relative; width: min(100%, calc((100vh - 170px) * 16 / 9 + 24px));
+  padding: 12px; border-radius: 8px; background: var(--ink-2); box-shadow: var(--shadow-modal);
+  opacity: 0; transform: translateY(16px); filter: blur(4px);
+  transition: opacity .2s var(--press), transform .2s var(--press), filter .2s var(--press);   /* out: 200ms */
+}
+.lightbox.is-open .lightbox-backdrop { opacity: 1; transition-duration: .24s; }
+.lightbox.is-open .lightbox-panel { opacity: 1; transform: none; filter: none; transition-duration: .24s; } /* in: 240ms */
+.lightbox-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; background: #000; }
 .lightbox-frame iframe, .lightbox-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.lightbox-title { margin: 18px 0 0; font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.lightbox-close { position: absolute; top: 16px; right: var(--gutter); font-family: var(--ui); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; padding: 10px 16px; border-radius: 999px; background: #fff; color: #000; }
-.lightbox-close:hover { opacity: .5; }
+.lightbox-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 4px 0; }
+.lightbox-title { margin: 0; color: var(--ink-11); }
+.lightbox-handle { display: none; }
+.lightbox-panel:focus { outline: none; }
+
+@media (max-width: 767px) {
+  .lightbox { place-items: end stretch; padding: 0; }
+  .lightbox-panel {
+    width: 100%; max-height: calc(100dvh - env(safe-area-inset-top) - 24px);
+    padding: 20px 20px 24px; border-radius: 14px 14px 0 0;
+    border-bottom: env(safe-area-inset-bottom) solid transparent;
+    box-shadow: 0 0 0 .5px var(--ink-6), 0 200px 0 0 var(--ink-2);   /* colour runs below the foot so pulling up never shows a gap */
+    opacity: 1; filter: none; transform: translateY(calc(100% + 48px));
+    transition: transform .2s var(--press);                               /* down: 200ms */
+    touch-action: none; user-select: none; -webkit-user-select: none;
+  }
+  .lightbox.is-open .lightbox-panel { transform: translateY(var(--drag, 0px)); transition: transform .32s var(--press); } /* up: 320ms */
+  .lightbox.is-dragging .lightbox-panel { transition: none; }
+  .lightbox-foot { order: -1; padding: 0 0 12px; }
+  .lightbox-panel { display: flex; flex-direction: column; }
+  .lightbox-title { font-family: var(--font); font-size: 20px; line-height: 28px; font-weight: 400; letter-spacing: -0.02em; text-transform: none; color: var(--ink-12); }
+  .lightbox-close { display: none; }
+  /* Grab handle replaces Close: a white tactile pill on the backdrop, 12px above the sheet */
+  .lightbox-handle {
+    display: grid; place-items: center; position: absolute; left: 50%; top: -56px; width: 88px; height: 44px; margin-left: -44px;
+    border-radius: 999px;
+  }
+  .lightbox-handle span {
+    width: 36px; height: 5px; border-radius: 999px; background: #fff;
+    box-shadow: inset 0 -0.5px 0 rgb(0 0 0 / .08), 0 0 0 .5px rgb(0 0 0 / .12), 0 1px 2px rgb(0 0 0 / .28);
+    margin-top: 32px;
+  }
+}
 
 /* REVEALS */
 .split .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
@@ -253,16 +348,16 @@ button.tile:hover .tile-label::after { opacity: 1; transform: none; }
 .rv-stagger.in > * { opacity: 1; transform: none; }
 .rv-img > img, .rv-img > video {
   clip-path: inset(100% 0 0 0); transform: scale(1.18);
-  transition: clip-path 1.5s var(--ease), transform 2.2s var(--ease-out);
+  transition: clip-path 1.5s var(--ease), transform 2.2s var(--ease-out), filter .15s var(--press);
 }
 .rv-img.in > img, .rv-img.in > video { clip-path: inset(0 0 0 0); transform: scale(1); }
 .rv-img .tile-label, .rv-img figcaption { opacity: 0; transform: translateY(10px); transition: opacity 1s var(--ease-out) .7s, transform 1.2s var(--ease-out) .7s; }
 .rv-img.in .tile-label, .rv-img.in figcaption { opacity: 1; transform: none; }
-button.tile.rv-img.in:hover img, button.tile.rv-img.in:hover video { transform: scale(1.03); }
 
 @media (max-width: 760px) {
   .grid { grid-template-columns: 1fr; }
   .tile, .tile-full { grid-column: auto; aspect-ratio: 4 / 5; }
+  .grid { padding: 0 8px; }
   .reel-ui { flex-direction: column; align-items: stretch; gap: 4px; }
   .nav { grid-template-columns: 1fr auto; }
   .nav-pill { display: none; }
@@ -277,4 +372,7 @@ button.tile.rv-img.in:hover img, button.tile.rv-img.in:hover video { transform: 
   .split .w > span, .rv, .rv-stagger > * { opacity: 1 !important; transform: none !important; filter: none !important; }
   .rv-img > img, .rv-img > video { clip-path: none !important; transform: none !important; }
   .rv-img .tile-label, .rv-img figcaption { opacity: 1 !important; transform: none !important; }
+  .lightbox-panel, .lightbox.is-open .lightbox-panel { transform: none !important; filter: none !important; transition: opacity .18s !important; }
+  .lightbox-backdrop { transition: opacity .18s !important; }
+  .lightbox:not(.is-open) .lightbox-panel { opacity: 0 !important; }
 }

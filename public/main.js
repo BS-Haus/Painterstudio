@@ -19,11 +19,22 @@
 
   /* Highlight the nav pill for the section in view */
   const pills = $$(".nav-pill a");
+  const navPill = $(".nav-pill");
+  const thumb = $(".nav-pill-thumb");
+  const moveThumb = () => {
+    const a = pills.find((p) => p.classList.contains("is-active")) || pills[0];
+    thumb.style.setProperty("--x", `${a.offsetLeft}px`);
+    thumb.style.setProperty("--w", `${a.offsetWidth}px`);
+  };
+  moveThumb();
+  document.fonts?.ready.then(() => { moveThumb(); requestAnimationFrame(() => navPill.classList.add("is-ready")); });
+  window.addEventListener("resize", moveThumb);
   const sections = pills.map((a) => $(a.getAttribute("href") === "#top" ? "#reel-wrap" : a.getAttribute("href")));
   const navObs = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
     const i = sections.indexOf(e.target);
     pills.forEach((p, j) => p.classList.toggle("is-active", j === i));
+    moveThumb();
   }), { rootMargin: "-45% 0px -50% 0px" });
   sections.forEach((s) => s && navObs.observe(s));
 
@@ -214,26 +225,82 @@
     return `<video src="${id}" autoplay loop muted playsinline controls></video>`;
   };
 
-  const open = (tile) => {
+  const panel = $("#lightbox-panel");
+  const isPhone = () => window.matchMedia("(max-width: 767px)").matches;
+  let closing = null;
+
+  const open = (tile, fromKeyboard) => {
+    clearTimeout(closing);
     lastFocus = document.activeElement;
     lbFrame.innerHTML = embed(tile.dataset);
     lbTitle.textContent = tile.dataset.title;
+    panel.style.setProperty("--drag", "0px");
     lb.hidden = false;
     document.body.style.overflow = "hidden";
     reel.pause();
-    requestAnimationFrame(() => lb.classList.add("is-open"));
-    $(".lightbox-close", lb).focus();
+    lb.getBoundingClientRect(); // commit the closed state so the rise animates
+    lb.classList.add("is-open");
+    // Close takes focus on desktop; on a phone the handle does only when opened from the keyboard, so a tap leaves no ring
+    if (!isPhone()) $(".lightbox-close", lb).focus({ preventScroll: true });
+    else { panel.tabIndex = -1; (fromKeyboard ? $(".lightbox-handle", lb) : panel).focus({ preventScroll: true }); }
   };
   const close = () => {
-    lb.classList.remove("is-open");
-    lbFrame.innerHTML = "";
-    lb.hidden = true;
-    document.body.style.overflow = "";
-    lastFocus?.focus();
+    if (lb.hidden || !lb.classList.contains("is-open")) return;
+    lb.classList.remove("is-open", "is-dragging");
+    panel.style.setProperty("--drag", "0px");
+    closing = setTimeout(() => {           // exits are faster than entrances: 200ms
+      lbFrame.innerHTML = "";
+      lb.hidden = true;
+      document.body.style.overflow = "";
+      lastFocus?.focus({ preventScroll: true });
+    }, 210);
   };
 
-  $$("button.tile").forEach((t) => t.addEventListener("click", () => open(t)));
+  $$("button.tile").forEach((t) => t.addEventListener("click", (e) => open(t, e.detail === 0)));
   $(".lightbox-close", lb).addEventListener("click", close);
-  lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !lb.hidden) close(); });
+  $(".lightbox-backdrop", lb).addEventListener("click", close);
+  $(".lightbox-handle", lb).addEventListener("click", (e) => { if (e.detail === 0) close(); }); // keyboard: Enter / Space
+  document.addEventListener("keydown", (e) => {
+    if (lb.hidden) return;
+    if (e.key === "Escape") close();
+    if (e.key === "Tab") {                 // keep focus inside the dialog
+      const f = $$("button", lb).filter((x) => x.offsetParent);
+      const i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length]?.focus();
+    }
+  });
+
+  /* Sheet drag (phone): drag from anywhere once a press moves 4px; close past min(64px, 15%) or on a quick flick */
+  let drag = null;
+  panel.addEventListener("pointerdown", (e) => {
+    if (!isPhone() || !lb.classList.contains("is-open")) return;
+    drag = { y: e.clientY, t: e.timeStamp, dy: 0, v: 0, live: false, onHandle: !!e.target.closest(".lightbox-handle"), id: e.pointerId };
+    if (drag.onHandle) { drag.live = true; panel.setPointerCapture(e.pointerId); lb.classList.add("is-dragging"); }
+  });
+  panel.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dy = e.clientY - drag.y;
+    if (!drag.live) {
+      if (Math.abs(dy) < 4) return;
+      drag.live = true; panel.setPointerCapture(e.pointerId); lb.classList.add("is-dragging");
+    }
+    const dt = Math.max(1, e.timeStamp - drag.t);
+    drag.v = (dy - drag.dy) / dt; drag.dy = dy; drag.t = e.timeStamp;
+    // down follows the finger; up gives a little resistance
+    panel.style.setProperty("--drag", `${dy > 0 ? dy : dy / 6}px`);
+  });
+  const endDrag = (e) => {
+    if (!drag || (e && e.pointerId !== drag.id)) return;
+    const { dy, v, live, onHandle } = drag;
+    drag = null;
+    lb.classList.remove("is-dragging");
+    if (onHandle && Math.abs(dy) <= 4) return close();               // a tap on the handle closes
+    if (!live) return;
+    if (dy > Math.min(64, panel.offsetHeight * 0.15) || v > 0.11) close();
+    else panel.style.setProperty("--drag", "0px");                     // spring back
+  };
+  panel.addEventListener("pointerup", endDrag);
+  panel.addEventListener("lostpointercapture", (e) => { if (e.target === panel) endDrag(e); });
+  document.addEventListener("touchstart", () => {}, { passive: true }); // lets :active (the press squeeze) fire on iOS
 })();
